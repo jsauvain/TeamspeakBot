@@ -1,5 +1,7 @@
 package ch.joel.teamspeakbot.properties;
 
+import ch.joel.teamspeakbot.TSBOTConfiguration;
+import ch.joel.teamspeakbot.util.ReflectionUtil;
 import org.apache.commons.io.IOUtils;
 
 import java.io.File;
@@ -8,6 +10,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Field;
+import java.util.List;
 import java.util.Properties;
 
 public class ConfigLoader {
@@ -26,11 +30,11 @@ public class ConfigLoader {
 	}
 
 	private TSBOTConfiguration createTSBotConfig() {
+		List<Field> fields = ReflectionUtil.getFieldsFromClass(TSBOTConfiguration.class);
 		TSBOTConfiguration configuration = new TSBOTConfiguration();
-		configuration.setHost(properties.getProperty("host"));
-		configuration.setUsername(properties.getProperty("username"));
-		configuration.setPassword(properties.getProperty("password"));
-		configuration.setNickname(properties.getProperty("nickname"));
+		for (Field field : fields) {
+			ReflectionUtil.setValue(field, configuration, properties.getProperty(field.getName()));
+		}
 		return configuration;
 	}
 
@@ -51,5 +55,4 @@ public class ConfigLoader {
 		}
 
 	}
-
 }

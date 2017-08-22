@@ -3,7 +3,6 @@ package ch.joel.teamspeakbot;
 import ch.joel.teamspeakbot.listeners.ClientJoinListener;
 import ch.joel.teamspeakbot.listeners.WroteMeListener;
 import ch.joel.teamspeakbot.properties.ConfigLoader;
-import ch.joel.teamspeakbot.properties.TSBOTConfiguration;
 import com.github.theholywaffle.teamspeak3.TS3Api;
 import com.github.theholywaffle.teamspeak3.TS3ApiAsync;
 import com.github.theholywaffle.teamspeak3.TS3Config;
