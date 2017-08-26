@@ -1,11 +1,11 @@
 package ch.joel.teamspeakbot.properties;
 
+import ch.jooel.config.YamlConfigurationFactory;
 import ch.joel.teamspeakbot.TSBOTConfiguration;
 import ch.joel.teamspeakbot.util.ReflectionUtil;
 import org.apache.commons.io.IOUtils;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,38 +16,23 @@ import java.util.Properties;
 
 public class ConfigLoader {
 
-	private static final File CONFIG_FILE = new File("config.properties");
-
-	private Properties properties = new Properties();
+	private static final File CONFIG_FILE = new File("config.yml");
 
 	public TSBOTConfiguration load() {
 		if (!CONFIG_FILE.exists()) {
 			createConfigFile();
 		}
-		initProperties();
 		return createTSBotConfig();
 
 	}
 
 	private TSBOTConfiguration createTSBotConfig() {
-		List<Field> fields = ReflectionUtil.getFieldsFromClass(TSBOTConfiguration.class);
-		TSBOTConfiguration configuration = new TSBOTConfiguration();
-		for (Field field : fields) {
-			ReflectionUtil.setValue(field, configuration, properties.getProperty(field.getName()));
-		}
-		return configuration;
-	}
-
-	private void initProperties() {
-		try (FileInputStream inputStream = new FileInputStream(CONFIG_FILE)) {
-			properties.load(inputStream);
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		}
+		YamlConfigurationFactory factory = new YamlConfigurationFactory();
+		return factory.load("config.yml", TSBOTConfiguration.class);
 	}
 
 	private void createConfigFile() {
-		try (InputStream inputStream = this.getClass().getResourceAsStream("/config.properties");
+		try (InputStream inputStream = this.getClass().getResourceAsStream("/config.yml");
 			 OutputStream outputStream = new FileOutputStream(CONFIG_FILE)) {
 			IOUtils.copy(inputStream, outputStream);
 		} catch (IOException ex) {
