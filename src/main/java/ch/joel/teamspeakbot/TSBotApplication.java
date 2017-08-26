@@ -1,5 +1,6 @@
 package ch.joel.teamspeakbot;
 
+import ch.joel.teamspeakbot.listeners.AfkListener;
 import ch.joel.teamspeakbot.listeners.ClientJoinListener;
 import ch.joel.teamspeakbot.listeners.WroteMeListener;
 import ch.joel.teamspeakbot.properties.ConfigLoader;
@@ -34,6 +35,7 @@ public class TSBotApplication {
 		}
 		api.registerAllEvents();
 		api.addTS3Listeners(new ClientJoinListener(api), new WroteMeListener(api, apiAsync));
+		AfkListener afkListener = new AfkListener(apiAsync, api);
 		api.sendChannelMessage("Bot started");
 	}
 

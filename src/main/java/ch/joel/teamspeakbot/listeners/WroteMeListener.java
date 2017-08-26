@@ -20,11 +20,13 @@ public class WroteMeListener extends TS3EventAdapter {
 		if (e.getInvokerId() != api.whoAmI().getId()) {
 			switch (e.getMessage()) {
 				case "!moveall":
-					if (api.getServerGroupsByClient(api.getClientInfo(e.getInvokerId())).stream().anyMatch(serverGroup -> serverGroup.getName().equals("Admin")))
+					if (api.getServerGroupsByClient(api.getClientInfo(e.getInvokerId())).stream().anyMatch(serverGroup -> serverGroup.getName().equals("Admin"))) {
+						int channelId = api.getClientInfo(e.getInvokerId()).getChannelId();
 						for (Client client : api.getClients()) {
-							if (client.getChannelId() != api.getClientInfo(e.getInvokerId()).getChannelId())
-								apiAsync.moveClient(client.getId(), api.getClientInfo(e.getInvokerId()).getChannelId());
+							if (client.getChannelId() != channelId)
+								apiAsync.moveClient(client.getId(), channelId);
 						}
+					}
 					break;
 				case "!kickall":
 					if (api.getServerGroupsByClient(api.getClientInfo(e.getInvokerId())).stream().anyMatch(serverGroup -> serverGroup.getName().equals("Admin"))) {
