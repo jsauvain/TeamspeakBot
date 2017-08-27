@@ -20,6 +20,7 @@ public class WroteMeListener extends TS3EventAdapter {
 		if (e.getInvokerId() != api.whoAmI().getId()) {
 			switch (e.getMessage()) {
 				case "!moveall":
+					System.out.println(e.getInvokerName() + " called moveall");
 					if (api.getServerGroupsByClient(api.getClientInfo(e.getInvokerId())).stream().anyMatch(serverGroup -> serverGroup.getName().equals("Admin"))) {
 						int channelId = api.getClientInfo(e.getInvokerId()).getChannelId();
 						for (Client client : api.getClients()) {
@@ -29,6 +30,7 @@ public class WroteMeListener extends TS3EventAdapter {
 					}
 					break;
 				case "!kickall":
+					System.out.println(e.getInvokerName() + " called kickall");
 					if (api.getServerGroupsByClient(api.getClientInfo(e.getInvokerId())).stream().anyMatch(serverGroup -> serverGroup.getName().equals("Admin"))) {
 						List<Client> clients = api.getClients();
 						clients.removeIf(cl -> cl.getId() == api.whoAmI().getId() || cl.getId() == e.getInvokerId());

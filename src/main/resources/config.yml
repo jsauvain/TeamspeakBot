@@ -1,4 +1,14 @@
-host: localhost
-username: username
-password: password
+server:
+  host: localhost
+  username: username
+  password: password
 nickname: Bot
+botJoinedServerMessage: "Hi %p, i'm here to help you!"
+afkMovedMessage: "You were moved because you are muted, if you unmute yourself, you will be moved back"
+welcomeUserMessage: "Welcome %p on example.ts"
+afkChannel: 0
+forbiddenNames:
+  - "Joel"
+  - "Jooel"
+forbiddenNamesRegex: "[a-zA-Z1-9|¦ ]*"
+forbiddenNameKickMessage: "You were kicked because your name is not allowed"

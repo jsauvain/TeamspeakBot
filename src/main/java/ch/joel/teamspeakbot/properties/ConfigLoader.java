@@ -1,8 +1,7 @@
 package ch.joel.teamspeakbot.properties;
 
-import ch.jooel.config.YamlConfigurationFactory;
 import ch.joel.teamspeakbot.TSBOTConfiguration;
-import ch.joel.teamspeakbot.util.ReflectionUtil;
+import ch.jooel.config.YamlConfigurationFactory;
 import org.apache.commons.io.IOUtils;
 
 import java.io.File;
@@ -10,9 +9,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Properties;
 
 public class ConfigLoader {
 
