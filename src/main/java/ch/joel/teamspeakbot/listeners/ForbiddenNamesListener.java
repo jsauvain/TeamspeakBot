@@ -18,17 +18,17 @@ public class ForbiddenNamesListener implements Runnable {
 
 	@Override
 	public void run() {
-		Pattern pattern = Pattern.compile(configuration.getForbiddenNamesRegex());
+		Pattern pattern = Pattern.compile(configuration.getForbiddenNames().getForbiddenNamesRegex());
 		new Timer().schedule(new TimerTask() {
 			@Override
 			public void run() {
 				apiAsync.getClients().onSuccess(clients -> {
 					for (Client client : clients) {
 						Matcher matcher = pattern.matcher(client.getNickname());
-						if (configuration.getForbiddenNames().contains(client.getNickname()) || !matcher.matches()) {
+						if (configuration.getForbiddenNames().getForbiddenNames().contains(client.getNickname()) || !matcher.matches()) {
 							apiAsync.getServerGroupsByClientId(client.getDatabaseId()).onSuccess(serverGroups -> {
 								if (serverGroups.stream().noneMatch(serverGroup -> serverGroup.getName().equals("Admin"))) {
-									apiAsync.kickClientFromServer(configuration.getForbiddenNameKickMessage().replace("%p", client.getNickname()), client.getId());
+									apiAsync.kickClientFromServer(configuration.getForbiddenNames().getForbiddenNameKickMessage().replace("%p", client.getNickname()), client.getId());
 									System.out.println(client.getNickname() + " was kicked for nickname");
 								}
 							});

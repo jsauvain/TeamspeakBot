@@ -8,7 +8,8 @@ afkMovedMessage: "You were moved because you are muted, if you unmute yourself, 
 welcomeUserMessage: "Welcome %p on example.ts"
 afkChannel: 0
 forbiddenNames:
-  - "Joel"
-  - "Jooel"
-forbiddenNamesRegex: "[a-zA-Z1-9|¦ ]*"
-forbiddenNameKickMessage: "You were kicked because your name is not allowed"
+  forbiddenNames:
+    - "Joel"
+    - "Jooel"
+  forbiddenNamesRegex: "[a-zA-Z1-9|¦ ]*"
+  forbiddenNameKickMessage: "You were kicked because your name is not allowed"

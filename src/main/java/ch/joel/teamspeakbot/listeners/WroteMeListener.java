@@ -17,27 +17,30 @@ public class WroteMeListener extends TS3EventAdapter {
 
 	@Override
 	public void onTextMessage(TextMessageEvent e) {
-		if (e.getInvokerId() != api.whoAmI().getId()) {
-			switch (e.getMessage()) {
-				case "!moveall":
-					System.out.println(e.getInvokerName() + " called moveall");
-					if (api.getServerGroupsByClient(api.getClientInfo(e.getInvokerId())).stream().anyMatch(serverGroup -> serverGroup.getName().equals("Admin"))) {
-						int channelId = api.getClientInfo(e.getInvokerId()).getChannelId();
-						for (Client client : api.getClients()) {
-							if (client.getChannelId() != channelId)
-								apiAsync.moveClient(client.getId(), channelId);
+		apiAsync.whoAmI().onSuccess(serverQueryInfo -> {
+			if (e.getInvokerId() != serverQueryInfo.getId()) {
+				switch (e.getMessage()) {
+					case "!moveall":
+						System.out.println(e.getInvokerName() + " called moveall");
+						if (api.getServerGroupsByClient(api.getClientInfo(e.getInvokerId())).stream().anyMatch(serverGroup -> serverGroup.getName().equals("Admin"))) {
+							int channelId = api.getClientInfo(e.getInvokerId()).getChannelId();
+							for (Client client : api.getClients()) {
+								if (client.getChannelId() != channelId)
+									apiAsync.moveClient(client.getId(), channelId);
+							}
 						}
-					}
-					break;
-				case "!kickall":
-					System.out.println(e.getInvokerName() + " called kickall");
-					if (api.getServerGroupsByClient(api.getClientInfo(e.getInvokerId())).stream().anyMatch(serverGroup -> serverGroup.getName().equals("Admin"))) {
-						List<Client> clients = api.getClients();
-						clients.removeIf(cl -> cl.getId() == api.whoAmI().getId() || cl.getId() == e.getInvokerId());
-						if (!clients.isEmpty())
-							apiAsync.kickClientFromServer(clients.toArray(new Client[clients.size()]));
-					}
+						break;
+					case "!kickall":
+						System.out.println(e.getInvokerName() + " called kickall");
+						if (api.getServerGroupsByClient(api.getClientInfo(e.getInvokerId())).stream().anyMatch(serverGroup -> serverGroup.getName().equals("Admin"))) {
+							List<Client> clients = api.getClients();
+							clients.removeIf(cl -> cl.getId() == api.whoAmI().getId() || cl.getId() == e.getInvokerId());
+							if (!clients.isEmpty())
+								apiAsync.kickClientFromServer(clients.toArray(new Client[clients.size()]));
+						}
+				}
 			}
-		}
+		});
+
 	}
 }

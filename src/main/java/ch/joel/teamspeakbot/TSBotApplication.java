@@ -43,17 +43,23 @@ public class TSBotApplication {
 
 		api = query.getApi();
 		apiAsync = query.getAsyncApi();
-		// tsbot YVTilttC
+		// tsbot RRqMIeJm
 		api.login(configuration.getServer().getUsername(), configuration.getServer().getPassword());
 		api.selectVirtualServerById(1);
 		api.setNickname(configuration.getNickname());
 	}
 
 	private void welcomeUsers() {
-		for (Client client : api.getClients()) {
-			if (client.getId() != api.whoAmI().getId())
-				api.sendPrivateMessage(client.getId(), configuration.getBotJoinedServerMessage().replace("%p", client.getNickname()));
-		}
+		apiAsync.getClients().onSuccess(clients -> {
+			for (Client client : clients) {
+				apiAsync.whoAmI().onSuccess(serverQueryInfo -> {
+					if (client.getId() != serverQueryInfo.getId())
+						apiAsync.sendPrivateMessage(client.getId(), configuration.getBotJoinedServerMessage().replace("%p", client.getNickname()));
+				});
+			}
+		});
+
+
 	}
 
 }
