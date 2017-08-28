@@ -1,4 +1,4 @@
-package ch.joel.teamspeakbot.properties;
+package ch.joel.teamspeakbot.config;
 
 import ch.joel.teamspeakbot.TSBOTConfiguration;
 import ch.jooel.config.YamlConfigurationFactory;

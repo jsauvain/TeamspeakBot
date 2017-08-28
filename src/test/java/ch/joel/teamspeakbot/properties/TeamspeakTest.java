@@ -1,6 +1,7 @@
 package ch.joel.teamspeakbot.properties;
 
 import ch.joel.teamspeakbot.TSBOTConfiguration;
+import ch.joel.teamspeakbot.config.ConfigLoader;
 import com.github.theholywaffle.teamspeak3.TS3Api;
 import com.github.theholywaffle.teamspeak3.TS3ApiAsync;
 import com.github.theholywaffle.teamspeak3.TS3Config;
