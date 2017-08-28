@@ -1,6 +1,7 @@
 package ch.joel.teamspeakbot.listeners;
 
-import com.github.theholywaffle.teamspeak3.TS3Api;
+import ch.joel.teamspeakbot.TSBOTConfiguration;
+import com.github.theholywaffle.teamspeak3.TS3ApiAsync;
 import com.github.theholywaffle.teamspeak3.api.event.ClientJoinEvent;
 import com.github.theholywaffle.teamspeak3.api.event.TS3EventAdapter;
 import lombok.RequiredArgsConstructor;
@@ -8,10 +9,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ClientJoinListener extends TS3EventAdapter {
 
-	private final TS3Api api;
+	private final TS3ApiAsync apiAsync;
+	private final TSBOTConfiguration configuration;
 
 	@Override
 	public void onClientJoin(ClientJoinEvent e) {
-		api.pokeClient(e.getClientId(), "Willkomme uf jooel.ch, " + e.getClientNickname());
+		apiAsync.pokeClient(e.getClientId(), configuration.getWelcomeUserMessage().replace("%p", e.getClientNickname()));
 	}
 }
