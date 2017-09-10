@@ -13,3 +13,11 @@ forbiddenNames:
     - "Jooel"
   forbiddenNamesRegex: "[a-zA-Z1-9|¦ ]*"
   forbiddenNameKickMessage: "You were kicked because your name is not allowed"
+mail:
+  host: smtp.zoho.eu
+  port: 465
+  username: user
+  password: password
+  strategy: SMTP_SSL
+  adminMail: test@gmail.com
+restHost: example.com

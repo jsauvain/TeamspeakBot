@@ -1,6 +1,7 @@
 package ch.joel.teamspeakbot;
 
 import ch.joel.teamspeakbot.config.ForbiddenNamesConfig;
+import ch.joel.teamspeakbot.config.MailConfiguration;
 import ch.joel.teamspeakbot.config.ServerAuthConfig;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,5 +19,7 @@ public class TSBOTConfiguration {
 	private String botJoinedServerMessage;
 	private String welcomeUserMessage;
 	private String afkMovedMessage;
+	private MailConfiguration mail;
+	private String restHost;
 
 }
