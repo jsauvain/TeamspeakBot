@@ -2,6 +2,7 @@ package ch.joel.teamspeakbot.test;
 
 import ch.joel.teamspeakbot.objects.Rank;
 import com.github.theholywaffle.teamspeak3.TS3ApiAsync;
+import com.github.theholywaffle.teamspeak3.api.wrapper.ServerGroup;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -30,6 +31,11 @@ public class SparkRest {
 				return halt(400);
 			apiAsync.getClientInfo(rank.getUserId()).onSuccess(result -> {
 				apiAsync.addClientToServerGroup(rank.getRankId(), result.getDatabaseId());
+				apiAsync.getServerGroups().onSuccess(groups -> {
+					String groupName = groups.stream().filter(serverGroup -> serverGroup.getId() == rank.getRankId()).map(ServerGroup::getName).findFirst().get();
+					apiAsync.sendPrivateMessage(rank.getUserId(), "You received a new group called" + groupName);
+				});
+
 			});
 			return "OK";
 		});
