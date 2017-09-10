@@ -19,28 +19,55 @@ public class WroteMeListener extends TS3EventAdapter {
 	public void onTextMessage(TextMessageEvent e) {
 		apiAsync.whoAmI().onSuccess(serverQueryInfo -> {
 			if (e.getInvokerId() != serverQueryInfo.getId()) {
-				switch (e.getMessage()) {
-					case "!moveall":
-						System.out.println(e.getInvokerName() + " called moveall");
-						if (api.getServerGroupsByClient(api.getClientInfo(e.getInvokerId())).stream().anyMatch(serverGroup -> serverGroup.getName().equals("Admin"))) {
-							int channelId = api.getClientInfo(e.getInvokerId()).getChannelId();
-							for (Client client : api.getClients()) {
-								if (client.getChannelId() != channelId)
-									apiAsync.moveClient(client.getId(), channelId);
-							}
-						}
+				if (!e.getMessage().startsWith("!"))
+					return;
+				String command = e.getMessage().split(" ")[0].substring(1);
+				String[] args = e.getMessage().substring(command.length() + 1).trim().split(" ");
+				switch (command) {
+					case "moveall":
+						moveAll(e);
 						break;
-					case "!kickall":
-						System.out.println(e.getInvokerName() + " called kickall");
-						if (api.getServerGroupsByClient(api.getClientInfo(e.getInvokerId())).stream().anyMatch(serverGroup -> serverGroup.getName().equals("Admin"))) {
-							List<Client> clients = api.getClients();
-							clients.removeIf(cl -> cl.getId() == api.whoAmI().getId() || cl.getId() == e.getInvokerId());
-							if (!clients.isEmpty())
-								apiAsync.kickClientFromServer(clients.toArray(new Client[clients.size()]));
-						}
+					case "kickall":
+						kickAll(e);
+						break;
+					case "broadcast":
+						broadcast(e, args);
+						break;
 				}
 			}
 		});
-
 	}
+
+	private void broadcast(TextMessageEvent e, String[] args) {
+		System.out.println(e.getInvokerName() + " called broadcast");
+		if (api.getServerGroupsByClient(api.getClientInfo(e.getInvokerId())).stream().anyMatch(serverGroup -> serverGroup.getName().equals("Admin"))) {
+			StringBuilder message = new StringBuilder();
+			for (String arg : args) {
+				message.append(arg).append(" ");
+			}
+			apiAsync.broadcast(message.toString());
+		}
+	}
+
+	private void kickAll(TextMessageEvent e) {
+		System.out.println(e.getInvokerName() + " called kickall");
+		if (api.getServerGroupsByClient(api.getClientInfo(e.getInvokerId())).stream().anyMatch(serverGroup -> serverGroup.getName().equals("Admin"))) {
+			List<Client> clients = api.getClients();
+			clients.removeIf(cl -> cl.getId() == api.whoAmI().getId() || cl.getId() == e.getInvokerId());
+			if (!clients.isEmpty())
+				apiAsync.kickClientFromServer(clients.toArray(new Client[clients.size()]));
+		}
+	}
+
+	private void moveAll(TextMessageEvent e) {
+		System.out.println(e.getInvokerName() + " called moveall");
+		if (api.getServerGroupsByClient(api.getClientInfo(e.getInvokerId())).stream().anyMatch(serverGroup -> serverGroup.getName().equals("Admin"))) {
+			int channelId = api.getClientInfo(e.getInvokerId()).getChannelId();
+			for (Client client : api.getClients()) {
+				if (client.getChannelId() != channelId)
+					apiAsync.moveClient(client.getId(), channelId);
+			}
+		}
+	}
+
 }
